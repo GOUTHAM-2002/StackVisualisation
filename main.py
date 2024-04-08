@@ -19,10 +19,12 @@ BLACK = (0, 0, 0)
 # Set up fonts
 font = pygame.font.SysFont(None, 24)
 
-array = []  # This array will be shared between threads
+array = []
+global data_structure# This array will be shared between threads
 
 
 def draw_array(array):
+    global data_structure
     screen.fill(WHITE)
     element_width = 40
     element_height = 50
@@ -38,28 +40,51 @@ def draw_array(array):
         text_y = element_y + (element_height - text.get_height()) // 2
         screen.blit(text, (text_x, text_y))
 
-    if array:
+    if array and data_structure == "stack":
         last_element_x = array_start_x + (len(array) - 1) * element_width + element_width // 2
         arrow_y = array_start_y + element_height + 10  # Adjust this value as needed
         pygame.draw.polygon(screen, BLACK, [(last_element_x, arrow_y), (last_element_x - 10, arrow_y + 20),
                                             (last_element_x + 10, arrow_y + 20)])
+    if array and data_structure =="queue":
+        last_element_x = array_start_x + (len(array) - 1) * element_width + element_width // 2
+        arrow_y = array_start_y + element_height + 10  # Adjust this value as needed
+        pygame.draw.polygon(screen, BLACK, [(last_element_x, arrow_y), (last_element_x - 10, arrow_y + 20),
+                                            (last_element_x + 10, arrow_y + 20)])
+
+
 
     pygame.display.flip()
 
 
 def handle_input():
     global array
+    global data_structure
     print("We will be learning about Data Structures")
+    print("Tell me which data structure You want to learn ??")
+    data_strucutre = input("1.Stack,2.Queue,3.Trees,4.Linked List,5.Graph")
+    if(data_strucutre=="1" or "tack" in data_strucutre):
+        array.clear()
+        data_structure="stack"
+        while True:
+            item = input("Push a number: ")
+            if item.isdigit():
+                array.append(int(item))
+            elif item == 'quit':
+                pygame.quit()
+                sys.exit()
+            elif item == "pop":
+                array.pop()
+    elif(data_strucutre=="2" or "ueue" in data_strucutre):
+        array.clear()
+        data_structure="queue"
+        while True:
+            item=input("queue a number: ")
+            if item.isdigit():
+                array.append(int(item))
+            elif item=="dequeue":
+                array=array[1:]
 
-    while True:
-        item = input("Push a number: ")
-        if item.isdigit():
-            array.append(int(item))
-        elif item == 'quit':
-            pygame.quit()
-            sys.exit()
-        elif item == "pop":
-            array.pop()
+
 
 
 def main():
